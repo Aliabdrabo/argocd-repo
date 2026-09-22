@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: my-environments
+  namespace: argocd
+
+spec:
+  generators:
+    - list:
+        elements:
+          - environment: dev
+            namespace: argocd-dev
+          - environment: staging
+            namespace: argocd-staging
+          - environment: prod
+            namespace: argocd-prod
+
+  template:
+    metadata:
+      name: "my-app-{{environment}}"
+    spec:
+      project: lab-project
+
+      source:
+        repoURL: https://github.com/Aliabdrabo/argocd-repo.git
+        targetRevision: main
+        path: .
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{namespace}}"
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
