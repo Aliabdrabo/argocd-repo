@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: values2-app
+  namespace: argocd
+
+spec:
+  project: lab-project
+
+  sources:
+    # Helm chart
+    - repoURL: https://github.com/Aliabdrabo/argocd-repo.git
+      targetRevision: main
+      path: .
+      helm:
+        valueFiles:
+          - $values/values-files/values-2.yaml
+
+    # Values repository/path
+    - repoURL: https://github.com/Aliabdrabo/argocd-repo.git
+      targetRevision: main
+      ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
