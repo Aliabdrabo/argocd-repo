@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: lab-project
+  namespace: argocd
+spec:
+  description: Argo CD learning lab project
+
+  sourceRepos:
+    - https://github.com/Aliabdrabo/argocd-repo.git
+
+  destinations:
+    - namespace: argocd-lab
+      server: https://kubernetes.default.svc
+    - namespace: argocd-dev
+      server: https://kubernetes.default.svc
+    - namespace: argocd-staging
+      server: https://kubernetes.default.svc
+    - namespace: argocd-prod
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
