@@ -13,6 +13,9 @@ config:
   environment: lab
   message: "Hello from Argo CD"
 
+secret:
+  name: eso-demo
+
 resources:
   requests:
     cpu: 50m
