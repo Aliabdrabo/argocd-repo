@@ -41,5 +41,9 @@ spec:
                   name: {{ .Release.Name }}-config
                   key: message
 
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secret.name }}
+
           resources:
 {{ toYaml .Values.resources | indent 12 }}
