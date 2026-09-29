@@ -13,10 +13,15 @@ spec:
 
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "vault-demo"
+        vault.hashicorp.com/agent-inject-secret-config.txt: "secret/data/eso-demo"
       labels:
         app: {{ .Release.Name }}
 
     spec:
+      serviceAccountName: vault-demo
       containers:
         - name: nginx
 
